@@ -1,0 +1,23 @@
+<h3>Комментарии</h3>
+{% for comment in game.comments.all %}
+    <div class="card mt-2">
+        <div class="card-body">
+            <p><strong>{{ comment.user.username }}</strong> ({{ comment.created_at|date:"d.m.Y H:i" }})</p>
+            <p>{{ comment.text }}</p>
+        </div>
+    </div>
+{% empty %}
+    <p>Комментариев пока нет.</p>
+{% endfor %}
+
+<h3>Рейтинг: {{ game.rating|floatformat:1 }} ★ ({{ game.total_votes }} голосов)</h3>
+
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'rate_game' game.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-orange">Оценить</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'account_login' %}">Войдите</a>, чтобы поставить оценку.</p>
+{% endif %}

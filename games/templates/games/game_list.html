@@ -1,0 +1,35 @@
+{% extends "infohub/base.html" %}
+
+{% block title %}Игры и приложения - InfoHub{% endblock %}
+
+{% block content %}
+    <h2>Игры и приложения</h2>
+
+    <div class="mb-3">
+        <a href="{% url 'game_list' %}?category=all" class="btn btn-orange">Все</a>
+        <a href="{% url 'game_list' %}?category=games" class="btn btn-orange">Игры</a>
+        <a href="{% url 'game_list' %}?category=apps" class="btn btn-orange">Приложения</a>
+    </div>
+
+    <form method="GET" class="mb-3">
+        <input type="text" name="q" class="form-control" placeholder="Поиск..." value="{{ query }}">
+        <button type="submit" class="btn btn-orange mt-2">Искать</button>
+    </form>
+
+    <div class="row">
+        {% for game in games %}
+            <div class="col-md-3">
+                <div class="card">
+                    {% if game.cover %}
+                        <img src="{{ game.cover.url }}" class="card-img-top">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ game.title }}</h5>
+                        <p class="card-text">{{ game.description|truncatechars:50 }}</p>
+                        <a href="#" class="btn btn-orange">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
