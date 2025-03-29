@@ -116,6 +116,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INSTALLED_APPS = [
+    "feedback",
     "django.contrib.admin",  # ✅ Должно быть здесь
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -144,10 +145,7 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "SCOPE": ["profile", "email"],
@@ -160,3 +158,28 @@ SOCIALACCOUNT_PROVIDERS = {
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# --- Modern allauth settings ---
+ACCOUNT_LOGIN_METHODS = {'username'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_ON_SIGNUP = False
+
+# --- Email backend for development ---
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@infohub.local'
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
+SOCIALACCOUNT_PROVIDERS['google'].update({
+    'APP': {
+        'client_id': '1029199638211-5mto76a0s310rbnm26r1o4l76q8s8qbu.apps.googleusercontent.com',
+        'secret': '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',
+        'key': ''
+    }
+})

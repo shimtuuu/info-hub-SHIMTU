@@ -120,3 +120,17 @@ def upload_game(request):
 def user_profile(request):
     user_games = Game.objects.filter(added_by=request.user)  # Выбираем игры текущего пользователя
     return render(request, "account/profile.html", {"user_games": user_games})
+
+
+from .forms import GameForm
+
+@login_required
+def upload_game(request):
+    if request.method == "POST":
+        form = GameForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("game_list")  # Переход после загрузки
+    else:
+        form = GameForm()
+    return render(request, "games/upload_game.html", {"form": form})

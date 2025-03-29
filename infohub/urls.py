@@ -1,5 +1,6 @@
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
+from telegram_auth.views import telegram_login
 from django.urls import path, include
 from users.views import edit_profile
 from django.shortcuts import redirect
@@ -13,6 +14,8 @@ def home_redirect(request):
     return redirect("account_login")
 
 urlpatterns = [
+    path("feedback/", include("feedback.urls")),
+    path("telegram/login/", telegram_login, name="telegram_login"),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("games/", include("games.urls")),
